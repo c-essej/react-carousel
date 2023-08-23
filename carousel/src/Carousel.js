@@ -11,10 +11,12 @@ import Card from "./Card";
  *
  * State:
  * - currCardIdx: integer for current card index
- *
+ * - leftArrow only visible if currCardIdx !== 0
+ * - rightArrow only visible if currCardIdx !== 2
+ * //TODO: move down
  * App --> Carousel --> Card
  */
- function Carousel({ photos, title }) {
+function Carousel({ photos, title }) {
   const [currCardIdx, setCurrCardIdx] = useState(0);
 
   const currCard = photos[currCardIdx];
@@ -27,33 +29,34 @@ import Card from "./Card";
 
   //Decrement currCardIdx state by 1
   function goBackward() {
-
-    const index = currCardIdx === 0 ? 2 : currCardIdx -1;
-
-    setCurrCardIdx(index);
+    setCurrCardIdx(currCardIdx - 1);
   }
+
+  //if currCardIdx === 2 hide right arrow;
+  //if currCardIdx === 0 hide left arrow;
 
   return (
     <div className="Carousel">
       <h1>{title}</h1>
       <div className="Carousel-main">
-        <i
+        {currCardIdx !== 0 && <i
           className="bi bi-arrow-left-circle"
           onClick={goBackward}
-        />
+        />}
         <Card
           caption={currCard.caption}
           src={currCard.src}
           currNum={currCardIdx + 1}
           totalNum={total}
         />
-        <i
+        {currCardIdx !== 2 && <i
           className="bi bi-arrow-right-circle"
           onClick={goForward}
-        />
+        />}
       </div>
     </div>
   );
 }
+//TODO: use length instead & < >
 
 export default Carousel;
